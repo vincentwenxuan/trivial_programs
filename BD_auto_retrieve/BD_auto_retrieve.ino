@@ -2,9 +2,14 @@
 #define BUTTON_LEFT 1
 #define BUTTON_RIGHT 3
 
-
 #include "calibration_macro.h"
 #include "mouse_util.h" 
+
+enum Task_type{
+  HEAT,
+  WOODCUT,
+  CRUSH
+} task;
  
 bool flips = true;
 
@@ -13,65 +18,68 @@ void setup() {
   Mouse.begin();
   Keyboard.begin();
   delay(4000);
-  
+  pinMode(5,INPUT_PULLUP);
 }
 
 void loop() {
   //Set this here to indicate 
-  int storage_item_index = 9;
+  int storage_item_index = 3;
+  task = HEAT;
   
-   //cancel current task
-  Keyboard.write(' ');
-  delay(4000);
-  
-  if (flips == true){
-      //left and right step 
-      Keyboard.write('a');
-      delay(1000);
-      Keyboard.write('d');
-      delay(1000);
-      flips = false;
-   }else{
-      //left and right step 
-      Keyboard.write('d');
-      delay(1000);
-      Keyboard.write('a');
-      delay(1000);
-      flips == true;
-   }
-  
-  real_retrieve (storage_item_index);
-  //do retrieve once an hour
-  for(int i = 0; i < 10; i++){
-    real_feed();
-    //delay 5mins
-    for(int i=0; i < 300; i++){  
-      delay(1000);
+  if (digitalRead(5)==LOW){
+     //cancel current task
+    Keyboard.write(' ');
+    delay(4000);
+    
+    if (flips == true){
+        //left and right step 
+        Keyboard.write('a');
+        delay(1000);
+        Keyboard.write('d');
+        delay(1000);
+        flips = false;
+     }else{
+        //left and right step 
+        Keyboard.write('d');
+        delay(1000);
+        Keyboard.write('a');
+        delay(1000);
+        flips == true;
+     }
+    
+    real_retrieve (storage_item_index);
+    //do retrieve once an hour
+    for(int i = 0; i < 10; i++){
+      real_feed();
+      //delay 5mins
+      for(int i=0; i < 300; i++){  
+        delay(1000);
+      }
+      
     }
     
-  }
   
-
-}
+  }
+}  
 
 void real_feed(){
-   move_to_restore();
-   mouse_real_click(BUTTON_LEFT);
-   delay(1000);
-   
-   move_to_confirm();
-   mouse_real_click(BUTTON_LEFT);
-   delay(1000);
-   
-   move_to_work();
-   mouse_real_click(BUTTON_LEFT);
-   delay(1000);
-   
-   Keyboard.write('0');
-   delay(1000); 
-
-
+     move_to_restore();
+     mouse_real_click(BUTTON_LEFT);
+     delay(1000);
+     
+     move_to_confirm();
+     mouse_real_click(BUTTON_LEFT);
+     delay(1000);
+     
+     move_to_work();
+     mouse_real_click(BUTTON_LEFT);
+     delay(1000);
+     
+     Keyboard.write('0');
+     delay(1000); 
 }
+
+
 
 
 void real_retrieve(int item_index){
@@ -106,7 +114,9 @@ void real_retrieve(int item_index){
   mouse_real_click(BUTTON_LEFT);
   delay(1000);
   
-  move_to_heat();
+  if(task == HEAT) move_to_heat();
+  if(task == WOODCUT);
+  if(task == CRUSH);
   mouse_real_click(BUTTON_LEFT);
   delay(1000);
   
