@@ -1,12 +1,12 @@
-
-
+#include "Keyboard.h"
 
 void setup() {
   // put your setup code here, to run once:
-  Mouse.begin();
-  Keyboard.begin();
+
   delay(4000);
   pinMode(5,INPUT_PULLUP);
+  Keyboard.begin();
+  
 }
 
 void loop() {
@@ -15,16 +15,16 @@ void loop() {
     pinMode(1, OUTPUT);
     delay(20);
     digitalWrite(1, LOW); 
-    delay(500);
-    pinMode(1, INPUT);
     delay(400);
+    pinMode(1, INPUT);
+    delay(500);
     pinMode(3, OUTPUT);
     delay(20);
     digitalWrite(3, LOW); 
-    delay(500);
+    delay(400);
     pinMode(3, INPUT);
-    delay(400);    
-
+    delay(500);    
+    
   }
 }  
 

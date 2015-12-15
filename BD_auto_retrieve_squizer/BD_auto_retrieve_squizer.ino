@@ -22,16 +22,30 @@ void setup() {
   Keyboard.begin();
   delay(4000);
   pinMode(5,INPUT_PULLUP);
-
+  pinMode(6,INPUT_PULLUP);
   //Set this here to indicate 
-  storage_item_index = 2;
-  task = CRUSH;
+  storage_item_index = 1;
+  task = HEAT;
 
 }
 
 void loop() {
+  if (digitalRead(6)==LOW){
+    pinMode(1, OUTPUT);
+    delay(20);
+    digitalWrite(1, LOW); 
+    delay(400);
+    pinMode(1, INPUT);
+    delay(500);
+    pinMode(3, OUTPUT);
+    delay(20);
+    digitalWrite(3, LOW); 
+    delay(400);
+    pinMode(3, INPUT);
+    delay(500);      
+  }
   
-  if (digitalRead(5)==LOW){
+  else if (digitalRead(5)==LOW){
      //cancel current task
     Keyboard.write(' ');
     delay(4000);
