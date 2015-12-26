@@ -26,6 +26,9 @@ const int WOODCUT_BUTTON_Y = 211;
 const int CRUSH_BUTTON_X = 227;
 const int CRUSH_BUTTON_Y = 211;
 
+const int BLEND_BUTTON_X = 207;
+const int BLEND_BUTTON_Y = 211;
+
 const int CRAFT_CONFIRM_BUTTON_X = 285;
 const int CRAFT_CONFIRM_BUTTON_Y = 140;
 

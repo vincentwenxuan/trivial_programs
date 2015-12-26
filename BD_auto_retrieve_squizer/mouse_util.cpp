@@ -105,6 +105,10 @@ void move_to_crush(){
   move_to_pos(CRUSH_BUTTON_X,CRUSH_BUTTON_Y);
 }
 
+void move_to_blend(){  
+  move_to_pos(BLEND_BUTTON_X,BLEND_BUTTON_Y);
+}
+
 void move_to_craft_confirm(){  
   move_to_pos(CRAFT_CONFIRM_BUTTON_X,CRAFT_CONFIRM_BUTTON_Y);
 }

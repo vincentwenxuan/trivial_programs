@@ -14,6 +14,7 @@ void move_to_craft();
 void move_to_heat();
 void move_to_woodcut();
 void move_to_crush();
+void move_to_blend();
 void move_to_craft_confirm();
 void move_to_storeitem(int index);
 void move_to_bagitem();
