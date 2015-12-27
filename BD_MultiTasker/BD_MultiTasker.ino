@@ -15,16 +15,18 @@
 
 enum Task_type{
   HEAT,
+  HEAT_M,
   WOODCUT,
   CRUSH,
   BLEND
-} task;
+  } task;
 
-bool flips = true;
-int storage_item_index1;
-int storage_item_index2;
 
-void setup() {
+  bool flips = true;
+  int storage_item_index1;
+  int storage_item_index2;
+
+  void setup() {
   // put your setup code here, to run once:
   Mouse.begin();
   Keyboard.begin();
@@ -35,7 +37,7 @@ void setup() {
   pinMode(EN_FEED_ONLY,INPUT_PULLUP);
 
   //Set task configuration here
-  set_task_index(BLEND,35,51);
+  set_task_index(HEAT, 4, 51);
 }
 
 
@@ -59,14 +61,11 @@ void loop() {
 }
 
 
-
-
 void set_task_index(Task_type task_assigned,int index1,int index2){
   storage_item_index1 = index1 ;
   storage_item_index2 = index2 ;
   task = task_assigned;
 }
-
 
 
 void do_retrieve(){
@@ -75,35 +74,39 @@ void do_retrieve(){
 
     if (task == BLEND){
       real_blend (storage_item_index1,storage_item_index2);
-    }else{
+    }
+    else if(task == HEAT_M){
+      real_heat_multiple (storage_item_index1,storage_item_index2);
+    }
+    else{
       real_retrieve(storage_item_index1);
     }
-    do_feed_worker(6);
-}
+      do_feed_worker(6);
+  }
 
 
-void cancel_step_left_right(){
+  void cancel_step_left_right(){
     //cancel current task
     Keyboard.write(' ');
     delay(4000);
 
-     if (flips == true){
+    if (flips == true){
         //left and right step
         Keyboard.write('a');
         delay(1000);
         Keyboard.write('d');
         delay(100);
         flips = false;
-     }else{
+        }else{
         //left and right step
         Keyboard.write('d');
         delay(1000);
         Keyboard.write('a');
         delay(100);
         flips == true;
-     }
-
+    }
 }
+
 
 void do_spammer(){
   Keyboard.write('r');
@@ -117,9 +120,10 @@ void do_feed_worker(int feed_times){
       //delay 5mins
       for(int i=0; i < 300; i++){
         delay(1000);
-      }
     }
 }
+}
+
 
 void do_squizer(){
     pinMode(1, OUTPUT);
@@ -138,22 +142,20 @@ void do_squizer(){
 
 
 void real_feed(){
-     move_to_restore();
-     mouse_real_click(BUTTON_LEFT);
-     delay(1000);
+   move_to_restore();
+   mouse_real_click(BUTTON_LEFT);
+   delay(1000);
 
-     move_to_confirm();
-     mouse_real_click(BUTTON_LEFT);
-     delay(1000);
+   move_to_confirm();
+   mouse_real_click(BUTTON_LEFT);
+   delay(1000);
 
-     move_to_work();
-     mouse_real_click(BUTTON_LEFT);
-     delay(1000);
+   move_to_work();
+   mouse_real_click(BUTTON_LEFT);
+   delay(1000);
 }
 
-
-void real_retrieve(int item_index){
-
+void open_storage_craft_menu(){
   //enter storage
   Keyboard.write('r');
   delay(2000);
@@ -181,6 +183,10 @@ void real_retrieve(int item_index){
   move_to_craft();
   mouse_real_click(BUTTON_LEFT);
   delay(1000);
+}
+
+void real_retrieve(int item_index){
+  open_storage_craft_menu();
 
   if(task == HEAT) move_to_heat();
   if(task == WOODCUT)move_to_woodcut();
@@ -199,37 +205,33 @@ void real_retrieve(int item_index){
 }
 
 
+void real_heat_multiple(int item_index1,int item_index2){
+  
+  open_storage_craft_menu();
 
-void real_blend(int item_index1,int item_index2){
-  //enter storage
-  Keyboard.write('r');
-  delay(2000);
-  Keyboard.write('r');
-  delay(2000);
-  Keyboard.write('r');
-  delay(2000);
-
-  move_to_store();
+  move_to_heat();
   mouse_real_click(BUTTON_LEFT);
   delay(1000);
 
-  //put bag item into store
-  move_to_bagitem();
+  move_to_selectitem(item_index1);
   mouse_real_click(BUTTON_RIGHT);
   delay(1000);
 
-  Keyboard.write('f');
+  move_to_selectitem(item_index2);
+  mouse_real_click(BUTTON_RIGHT);
   delay(1000);
 
-  Keyboard.write(' ');
-  delay(1000);
-
-  //begin crafting
-  move_to_craft();
+  move_to_craft_confirm();
   mouse_real_click(BUTTON_LEFT);
   delay(1000);
 
+}
 
+
+
+void real_blend(int item_index1,int item_index2){
+  open_storage_craft_menu();
+  
   move_to_blend();
   mouse_real_click(BUTTON_LEFT);
   delay(1000);
